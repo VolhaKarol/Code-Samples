@@ -17,7 +17,6 @@ def process_news_page(grab, url):
             ditem['author'] = author.text()
         ditem['title'] = article_page.select(".//h1").text()
         news_list.append(ditem)
-        news_list.append(ditem)
 
 def get_url(grab, page_num):
     page_url = 'http://www.kp.by/daily/minsk?pages.number=' + str(page_num)
