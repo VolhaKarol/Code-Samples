@@ -1,12 +1,13 @@
 from grab import Grab
 from urllib.parse import urljoin
+import pickle
 
 page_count = 3
 start_url = 'http://www.kp.by'
 
 def execute_query(node, query):
     nodes = node.select(query)
-    return nodes[0].text() if len(nodes) > 0 else None
+    return nodes[0].text().strip() if len(nodes) > 0 else None
 
 
 def process_news_page(grab, url):
@@ -37,14 +38,20 @@ def get_urls(grab, page_num):
         print(url)
         yield url
 
+
 news_list = []
-g = Grab()
+grab = Grab()
+grab.setup(timeout=15, connect_timeout=10)
 
 for i in reversed(range(1, page_count + 1)):
-    urls = get_urls(g, i)
+    urls = get_urls(grab, i)
     for url in urls:
-        news_item = process_news_page(g, url)
+        news_item = process_news_page(grab, url)
         if news_item:
             news_list.append(news_item)
+
+
+with open('news_list.pickle', 'wb') as f:
+    pickle.dump(news_list, f)
 
 print(news_list)
