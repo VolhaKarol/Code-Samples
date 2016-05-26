@@ -8,12 +8,9 @@ start_url = 'http://www.kp.by'
 
 def execute_query(node, query, first_only=True):
     nodes = node.select(query)
-
     q_result = None
-
     if len(nodes) > 0:
         q_result = nodes[0].text().strip() if first_only else ' '.join(n.text().strip() for n in nodes)
-
     return q_result
 
 
@@ -32,7 +29,6 @@ def process_news_page(gra, page_url):
             article_page,
             ".//div[contains(@class, 'text')]/*[not(contains(@class, 'coverImg')) and not(contains(@class, 'video'))]",
             False)
-
         news_item['date'] = execute_query(article_page, ".//time")
         return news_item
 
